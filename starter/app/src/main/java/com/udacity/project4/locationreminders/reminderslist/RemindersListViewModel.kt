@@ -2,7 +2,9 @@ package com.udacity.project4.locationreminders.reminderslist
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
+import com.udacity.project4.authentication.FirebaseUserLiveData
 import com.udacity.project4.base.BaseViewModel
 import com.udacity.project4.locationreminders.data.ReminderDataSource
 import com.udacity.project4.locationreminders.data.dto.ReminderDTO
@@ -57,4 +59,14 @@ class RemindersListViewModel(
     private fun invalidateShowNoData() {
         showNoData.value = remindersList.value == null || remindersList.value!!.isEmpty()
     }
+
+    val authenticationState = FirebaseUserLiveData().map { user ->
+        if (user != null) {
+            FirebaseUserLiveData.AuthenticationState.AUTHENTICATED
+        }
+        else {
+            FirebaseUserLiveData.AuthenticationState.UNAUTHENTICATED
+        }
+    }
+
 }
