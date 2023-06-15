@@ -96,6 +96,13 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
                 MarkerOptions()
                     .position(poi.latLng)
                     .title(poi.name)
+                    .snippet(
+                        getString(
+                            R.string.lat_long_snippet,
+                            poi.latLng.latitude,
+                            poi.latLng.longitude
+                        )
+                    )
             )
             poiMarker?.showInfoWindow()
         }
@@ -172,7 +179,10 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
 
     private fun requestLocationPermission() {
         this@SelectLocationFragment.requestPermissions(
-            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+            arrayOf(
+                "android.permission.ACCESS_BACKGROUND_LOCATION",
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ),
             REQUEST_LOCATION_PERMISSION
         )
     }
