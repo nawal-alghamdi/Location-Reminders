@@ -5,6 +5,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.content.pm.PackageManager
+import android.content.res.Resources
 import android.location.Location
 import android.os.Bundle
 import android.util.Log
@@ -66,7 +67,20 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
         map = googleMap
 //        TODO: zoom to the user location after taking his permission
         enableMyLocation()
+
 //        TODO: add style to the map
+        try {
+            val success = googleMap.setMapStyle(
+                MapStyleOptions.loadRawResourceStyle(
+                    requireActivity(), R.raw.style_json
+                )
+            )
+            if (!success) {
+                Log.e(TAG, "Style parsing failed.")
+            }
+        } catch (e: Resources.NotFoundException) {
+            Log.e(TAG, "Can't find style. Error: ", e)
+        }
 
 //        TODO: put a marker to location that the user selected
         setPoiClick(map)
