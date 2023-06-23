@@ -26,13 +26,13 @@ class AuthenticationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_authentication)
-//         TODO: Implement the create account and sign in using FirebaseUI, use sign in using email and sign in using Google
+       // Implement the create account and sign in using FirebaseUI, use sign in using email and sign in using Google
         val loginButton: Button = findViewById(R.id.login_button)
         loginButton.setOnClickListener {
             launchSignInFlow()
         }
 
-//          TODO: If the user was authenticated, send him to RemindersActivity
+        // If the user was authenticated, send him to RemindersActivity
         viewModel.authenticationState.observe(this) { state ->
             when (state) {
                 FirebaseUserLiveData.AuthenticationState.AUTHENTICATED -> {

@@ -32,7 +32,6 @@ class SaveReminderFragment : BaseFragment() {
     private lateinit var geofencingClient: GeofencingClient
 
     // A PendingIntent for the Broadcast Receiver that handles geofence transitions.
-    // TODO: Step 8 add in a pending intent
     private val geofencePendingIntent: PendingIntent by lazy {
         val intent = Intent(requireContext(), GeofenceBroadcastReceiver::class.java)
         intent.action = ACTION_GEOFENCE_EVENT
@@ -72,7 +71,7 @@ class SaveReminderFragment : BaseFragment() {
                 title, description, location, latitude, longitude
             )
             _viewModel.validateEnteredData(reminderDataItem)
-            //TODO: use the user entered reminder details to:
+            // use the user entered reminder details to:
             // 1) add a geofencing request
             // 2) save the reminder to the local db
             addGeofenceForTheSelectedLocation()
@@ -81,7 +80,7 @@ class SaveReminderFragment : BaseFragment() {
 
     @SuppressLint("MissingPermission")
     private fun addGeofenceForTheSelectedLocation() {
-        // TODO: Step 10 add in code to add the geofence
+        // add in code to add the geofence
         val geofence = reminderDataItem.longitude?.let { longitude ->
             reminderDataItem.latitude?.let { latitude ->
                 Geofence.Builder().setRequestId(reminderDataItem.id).setCircularRegion(
