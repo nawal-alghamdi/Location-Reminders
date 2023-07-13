@@ -97,7 +97,7 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
             Log.d(TAG, "POI latLng: ${poi!!.latLng}, POI name: ${poi!!.name}")
             findNavController().popBackStack()
         } else {
-            Toast.makeText(activity, getString(R.string.select_poi), Toast.LENGTH_SHORT).show()
+            Toast.makeText(activity, getString(R.string.err_select_poi), Toast.LENGTH_SHORT).show()
         }
     }
 
