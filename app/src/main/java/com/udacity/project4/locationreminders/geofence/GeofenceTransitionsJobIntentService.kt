@@ -38,15 +38,19 @@ class GeofenceTransitionsJobIntentService : JobIntentService(), CoroutineScope {
         // handle the geofencing transition events and
         // send a notification to the user when he enters the geofence area
         val geofencingEvent = GeofencingEvent.fromIntent(intent)
-        if (geofencingEvent.hasError()) {
-            val errorMessage = errorMessage(baseContext, geofencingEvent.errorCode)
-            Log.e(TAG, errorMessage)
-            return
+        if (geofencingEvent != null) {
+            if (geofencingEvent.hasError()) {
+                val errorMessage = errorMessage(baseContext, geofencingEvent.errorCode)
+                Log.e(TAG, errorMessage)
+                return
+            }
         }
-        if (geofencingEvent.geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER) {
-            Log.v(TAG, baseContext.getString(R.string.geofence_entered))
-            // call @sendNotification
-            sendNotification(geofencingEvent.triggeringGeofences)
+        if (geofencingEvent != null) {
+            if (geofencingEvent.geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER) {
+                Log.v(TAG, baseContext.getString(R.string.geofence_entered))
+                // call @sendNotification
+                geofencingEvent.triggeringGeofences?.let { sendNotification(it) }
+            }
         }
     }
 
