@@ -19,8 +19,14 @@
     <string name="lat_long_snippet">Lat: %1$.5f, Long: %2$.5f</string>
     <string name="dropped_pin">Dropped Pin</string>
     <string name="poi">poi</string>
-    <string name="location_required_error">Location services must be enabled to use the app</string>
-    <string name="permission_denied_explanation">You need to grant location permission in order to select the location.</string>
+    <string name="permission_denied_explanation">Location services must be enabled to use the app</string>
+    <string name="allow_background_permission_from_app_settings">Please grant (Allow all the time) location access from app settings</string>
+    <string name="allow_location_permission_from_app_settings">Please grant location permission from app settings</string>
+    <string name="please_grant_location_permission">Please grant location permission to select the location</string>
+    <string name="grant_location_permission_title">Grant location permission</string>
+    <string name="grant_permission_label">Grant permission</string>
+    <string name="redirect_to_app_settings_label">Redirect to app settings</string>
+    <string name="cancel_label">Cancel</string>
     <string name="location_permission">Location permission required</string>
     <string name="settings">Settings</string>
     <string name="err_select_poi">Please select a point of interest</string>

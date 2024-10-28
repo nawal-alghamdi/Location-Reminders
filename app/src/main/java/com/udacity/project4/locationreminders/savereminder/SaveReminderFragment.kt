@@ -3,6 +3,7 @@ package com.udacity.project4.locationreminders.savereminder
 import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -33,11 +34,14 @@ class SaveReminderFragment : BaseFragment() {
 
     // A PendingIntent for the Broadcast Receiver that handles geofence transitions.
     private val geofencePendingIntent: PendingIntent by lazy {
+        val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        } else {
+            PendingIntent.FLAG_UPDATE_CURRENT
+        }
         val intent = Intent(requireContext(), GeofenceBroadcastReceiver::class.java)
         intent.action = ACTION_GEOFENCE_EVENT
-        PendingIntent.getBroadcast(
-            this.requireContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT
-        )
+        PendingIntent.getBroadcast(this.requireContext(), 0, intent, flags)
     }
 
     override fun onCreateView(

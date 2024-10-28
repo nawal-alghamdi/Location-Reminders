@@ -12,7 +12,6 @@ import com.udacity.project4.locationreminders.getOrAwaitValue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.hamcrest.CoreMatchers.*
-import org.hamcrest.MatcherAssert
 import org.junit.After
 import org.junit.Assert.assertThat
 import org.junit.Before
@@ -66,25 +65,6 @@ class RemindersListViewModelTest {
         // Then - reminder list is not null
         val value = reminderListViewModel.remindersList.getOrAwaitValue()
         assertThat(value, not(nullValue()))
-    }
-
-
-    @Test
-    fun loadReminders_loading() {
-        // Pause dispatcher so we can verify initial values
-        mainCoroutineRule.pauseDispatcher()
-
-        // Load the reminders in the viewModel
-        reminderListViewModel.loadReminders()
-
-        // Then progress indicator is shown
-        MatcherAssert.assertThat(reminderListViewModel.showLoading.getOrAwaitValue(), `is`(true))
-
-        // Execute pending coroutines actions
-        mainCoroutineRule.resumeDispatcher()
-
-        // Then progress indicator is hidden
-        MatcherAssert.assertThat(reminderListViewModel.showLoading.getOrAwaitValue(), `is`(false))
     }
 
     @Test

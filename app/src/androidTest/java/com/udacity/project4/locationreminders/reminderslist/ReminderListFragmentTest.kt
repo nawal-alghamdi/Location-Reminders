@@ -32,7 +32,7 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
 import org.koin.dsl.module
-import org.koin.test.AutoCloseKoinTest
+import org.koin.test.KoinTest
 import org.koin.test.get
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
@@ -41,7 +41,7 @@ import org.mockito.Mockito.verify
 @ExperimentalCoroutinesApi
 //UI Testing
 @MediumTest
-class ReminderListFragmentTest : AutoCloseKoinTest() {
+class ReminderListFragmentTest : KoinTest {
 
     @get:Rule
     val instantExecutor = InstantTaskExecutorRule()
