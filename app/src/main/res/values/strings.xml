@@ -20,11 +20,7 @@
     <string name="dropped_pin">Dropped Pin</string>
     <string name="poi">poi</string>
     <string name="permission_denied_explanation">Location services must be enabled to use the app</string>
-    <string name="allow_background_permission_from_app_settings">Please grant (Allow all the time) location access from app settings</string>
     <string name="allow_location_permission_from_app_settings">Please grant location permission from app settings</string>
-    <string name="please_grant_location_permission">Please grant location permission to select the location</string>
-    <string name="grant_location_permission_title">Grant location permission</string>
-    <string name="grant_permission_label">Grant permission</string>
     <string name="redirect_to_app_settings_label">Redirect to app settings</string>
     <string name="cancel_label">Cancel</string>
     <string name="location_permission">Location permission required</string>
@@ -52,5 +48,7 @@
     <string name="geofence_too_many_pending_intents">You have provided too many PendingIntents to the addGeofences() call.</string>
     <string name="error_adding_geofence">Error Happened, Can\'t Add Geofence</string>
     <string name="unknown_geofence_error">Unknown error: the Geofence service is not available now</string>
+    <string name="for_a_better_experience_turn_on_device_location">For a better experience, turn on device location, which uses Google\'s location service.</string>
+    <string name="device_location_must_be_enabled_to_add_a_geofence">Device location must be enabled to add a geofence</string>
 
 </resources>
