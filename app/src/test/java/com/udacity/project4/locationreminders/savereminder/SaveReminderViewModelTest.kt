@@ -9,7 +9,7 @@ import com.udacity.project4.locationreminders.data.FakeDataSource
 import com.udacity.project4.locationreminders.getOrAwaitValue
 import com.udacity.project4.locationreminders.reminderslist.ReminderDataItem
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.CoreMatchers.notNullValue
 import org.hamcrest.MatcherAssert.assertThat
@@ -52,7 +52,7 @@ class SaveReminderViewModelTest {
     }
 
     @Test
-    fun saveReminder_returnSavedReminder_andShowToast() = mainCoroutineRule.runBlockingTest {
+    fun saveReminder_returnSavedReminder_andShowToast() = runTest {
         // Given a reminderDTO
         val reminderDTO = ReminderDataItem(
             "Title1", "desc1", "location1", 0.0, 0.0

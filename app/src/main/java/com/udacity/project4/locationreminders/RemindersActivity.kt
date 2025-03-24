@@ -28,8 +28,15 @@ class RemindersActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
-                (binding.navHostFragment as NavHostFragment).navController.popBackStack()
-                return true
+                // Retrieve the NavHostFragment from the FragmentManager
+                val navHostFragment =
+                    supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as? NavHostFragment
+                val navController = navHostFragment?.navController
+
+                // Navigate back if the NavController is available
+                if (navController?.popBackStack() == true) {
+                    return true
+                }
             }
         }
         return super.onOptionsItemSelected(item)

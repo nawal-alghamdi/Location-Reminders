@@ -9,11 +9,17 @@ import com.udacity.project4.locationreminders.MainCoroutineRule
 import com.udacity.project4.locationreminders.data.FakeDataSource
 import com.udacity.project4.locationreminders.data.dto.ReminderDTO
 import com.udacity.project4.locationreminders.getOrAwaitValue
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runBlockingTest
-import org.hamcrest.CoreMatchers.*
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
+import org.hamcrest.CoreMatchers.`is`
+import org.hamcrest.CoreMatchers.not
+import org.hamcrest.CoreMatchers.nullValue
+import org.hamcrest.MatcherAssert.assertThat
 import org.junit.After
-import org.junit.Assert.assertThat
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -49,15 +55,13 @@ class RemindersListViewModelTest {
     }
 
     @Test
-    fun loadReminders_remindersListNotNull() {
+    fun loadReminders_remindersListNotNull() = runTest {
         // Given - Add reminder to the repository
         val reminderDTO = ReminderDTO(
             "Title1", "desc1", "location1", 0.0, 0.0
         )
 
-        mainCoroutineRule.runBlockingTest {
-            remindersRepo.saveReminder(reminderDTO)
-        }
+        remindersRepo.saveReminder(reminderDTO)
 
         // When - Loading reminders
         reminderListViewModel.loadReminders()
@@ -65,6 +69,24 @@ class RemindersListViewModelTest {
         // Then - reminder list is not null
         val value = reminderListViewModel.remindersList.getOrAwaitValue()
         assertThat(value, not(nullValue()))
+    }
+
+    @Test
+    fun loadReminders_loading() = runTest {
+        // Set Main dispatcher to not run coroutines eagerly, for just this one test
+        Dispatchers.setMain(StandardTestDispatcher())
+
+        // Load the reminders in the viewModel
+        reminderListViewModel.loadReminders()
+
+        // Then progress indicator is shown
+        assertThat(reminderListViewModel.showLoading.getOrAwaitValue(), `is`(true))
+
+        // Execute pending coroutines actions
+        advanceUntilIdle()
+
+        // Then progress indicator is hidden
+        assertThat(reminderListViewModel.showLoading.getOrAwaitValue(), `is`(false))
     }
 
     @Test

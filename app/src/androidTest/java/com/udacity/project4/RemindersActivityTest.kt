@@ -2,11 +2,14 @@ package com.udacity.project4
 
 import android.app.Activity
 import android.app.Application
+import androidx.appcompat.widget.Toolbar
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider.getApplicationContext
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.Espresso.pressBack
 import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.action.ViewActions
+import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.RootMatchers.withDecorView
 import androidx.test.espresso.matcher.ViewMatchers.*
@@ -39,8 +42,7 @@ import org.koin.test.get
 @RunWith(AndroidJUnit4::class)
 @LargeTest
 //END TO END test to black box test the app
-class RemindersActivityTest :
-    KoinTest {// Extended Koin Test - embed autoclose @after method to close Koin after every test
+class RemindersActivityTest : KoinTest {// Extended Koin Test - embed autoclose @after method to close Koin after every test
 
     private lateinit var repository: ReminderDataSource
     private lateinit var appContext: Application
@@ -67,7 +69,7 @@ class RemindersActivityTest :
                     appContext, get() as ReminderDataSource
                 )
             }
-            single { RemindersLocalRepository(get()) }
+            single<ReminderDataSource> { RemindersLocalRepository(get()) }
             single { LocalDB.createRemindersDao(appContext) }
         }
         //declare a new koin module
@@ -137,24 +139,20 @@ class RemindersActivityTest :
     }
 
     @Test
-    fun clickSaveLocationButton_whenPOI_notSelected_showToastErrorMsg() {
+    fun fragmentSaveReminder_pressBackButton_navigateToReminderList() {
         // Start up Reminders screen
         val activityScenario = ActivityScenario.launch(RemindersActivity::class.java)
         dataBindingIdlingResource.monitorActivity(activityScenario)
 
-        // Click on the add button, click on Reminder Location to select a location,
-        // click save before selecting a POI, make sure error toast message is shown
-        onView(withId(R.id.addReminderFAB)).perform(ViewActions.click())
-        onView(withId(R.id.selectLocation)).perform(ViewActions.click())
-        onView(withId(R.id.save_button)).perform(ViewActions.click())
-        onView(withText(R.string.err_select_poi)).inRoot(
+        // Click on the add button, press upButton, make sure it navigate to ReminderListFragment
+        onView(withId(R.id.addReminderFAB)).perform(click())
+        pressBack()
+        onView(withText(R.string.no_data)).inRoot(
             withDecorView(
-                not(
-                    `is`(
-                        getRemindersActivity(
-                            activityScenario
-                        ).window.decorView
-                    )
+                `is`(
+                    getRemindersActivity(
+                        activityScenario
+                    ).window.decorView
                 )
             )
         ).check(matches(isDisplayed()))

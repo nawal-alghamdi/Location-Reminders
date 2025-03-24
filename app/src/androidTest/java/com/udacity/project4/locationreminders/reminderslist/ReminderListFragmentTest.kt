@@ -64,7 +64,7 @@ class ReminderListFragmentTest : KoinTest {
                     appContext, get() as ReminderDataSource
                 )
             }
-            single { RemindersLocalRepository(get()) as ReminderDataSource }
+            single<ReminderDataSource> { RemindersLocalRepository(get()) }
             single { LocalDB.createRemindersDao(appContext) }
         }
         //declare a new koin module
