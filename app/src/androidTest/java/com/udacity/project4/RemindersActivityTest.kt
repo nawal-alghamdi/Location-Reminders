@@ -1,8 +1,8 @@
 package com.udacity.project4
 
+import android.Manifest
 import android.app.Activity
 import android.app.Application
-import androidx.appcompat.widget.Toolbar
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider.getApplicationContext
 import androidx.test.espresso.Espresso.onView
@@ -15,6 +15,7 @@ import androidx.test.espresso.matcher.RootMatchers.withDecorView
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
+import androidx.test.rule.GrantPermissionRule
 import com.udacity.project4.locationreminders.RemindersActivity
 import com.udacity.project4.locationreminders.data.ReminderDataSource
 import com.udacity.project4.locationreminders.data.dto.ReminderDTO
@@ -30,6 +31,7 @@ import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.CoreMatchers.not
 import org.junit.After
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -49,6 +51,9 @@ class RemindersActivityTest : KoinTest {// Extended Koin Test - embed autoclose 
 
     // An Idling Resource that waits for Data Binding to have no pending bindings
     private val dataBindingIdlingResource = DataBindingIdlingResource()
+
+    @get:Rule
+    val permissionLocation: GrantPermissionRule = GrantPermissionRule.grant(Manifest.permission.ACCESS_FINE_LOCATION)
 
     /**
      * As we use Koin as a Service Locator Library to develop our code, we'll also use Koin to test our code.
@@ -157,6 +162,31 @@ class RemindersActivityTest : KoinTest {// Extended Koin Test - embed autoclose 
             )
         ).check(matches(isDisplayed()))
 
+        activityScenario.close()
+    }
+
+    @Test
+    fun clickSaveLocationButton_whenPOI_notSelected_showToastErrorMsg() {
+        // Start up Reminders screen
+        val activityScenario = ActivityScenario.launch(RemindersActivity::class.java)
+        dataBindingIdlingResource.monitorActivity(activityScenario)
+
+        // Click on the add button, click on Reminder Location to select a location,
+        // click save before selecting a POI, make sure error toast message is shown
+        onView(withId(R.id.addReminderFAB)).perform(ViewActions.click())
+        onView(withId(R.id.selectLocation)).perform(ViewActions.click())
+        onView(withId(R.id.save_button)).perform(ViewActions.click())
+        onView(withText(R.string.err_select_poi)).inRoot(
+            withDecorView(
+                not(
+                    `is`(
+                        getRemindersActivity(
+                            activityScenario
+                        ).window.decorView
+                    )
+                )
+            )
+        ).check(matches(isDisplayed()))
         activityScenario.close()
     }
 
