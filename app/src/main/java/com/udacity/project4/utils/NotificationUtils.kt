@@ -18,6 +18,12 @@ fun sendNotification(context: Context, reminderDataItem: ReminderDataItem) {
     val notificationManager = context
         .getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
+    val pendingIntentFlags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
+    } else {
+        PendingIntent.FLAG_UPDATE_CURRENT
+    }
+
     // We need to create a NotificationChannel associated with our CHANNEL_ID before sending a notification.
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
         && notificationManager.getNotificationChannel(NOTIFICATION_CHANNEL_ID) == null
@@ -38,7 +44,7 @@ fun sendNotification(context: Context, reminderDataItem: ReminderDataItem) {
         .addParentStack(ReminderDescriptionActivity::class.java)
         .addNextIntent(intent)
     val notificationPendingIntent = stackBuilder
-        .getPendingIntent(getUniqueId(), PendingIntent.FLAG_UPDATE_CURRENT)
+        .getPendingIntent(getUniqueId(), pendingIntentFlags)
 
 //    build the notification object with the data to be shown
     val notification = NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
