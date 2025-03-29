@@ -161,6 +161,7 @@ class SaveReminderFragment : BaseFragment() {
                 .addGeofence(it).build()
         }
         if (geofencingRequest != null) {
+            requestNotificationPermission()
             geofencingClient.addGeofences(geofencingRequest, geofencePendingIntent).run {
                 addOnSuccessListener {
                     // What to do if the geofence is added
@@ -297,9 +298,23 @@ class SaveReminderFragment : BaseFragment() {
         _viewModel.onClear()
     }
 
+    private fun requestNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+            PackageManager.PERMISSION_DENIED == ContextCompat.checkSelfPermission(
+                requireActivity(), Manifest.permission.POST_NOTIFICATIONS
+            )
+        ) {
+            requestPermissions(
+                arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                REQUEST_NOTIFICATION_PERMISSIONS_REQUEST_CODE
+            )
+        }
+    }
+
     companion object {
         private const val REQUEST_FOREGROUND_AND_BACKGROUND_PERMISSION_RESULT_CODE = 33
         private const val REQUEST_FOREGROUND_ONLY_PERMISSIONS_REQUEST_CODE = 34
+        private const val REQUEST_NOTIFICATION_PERMISSIONS_REQUEST_CODE = 35
         private const val REQUEST_TURN_DEVICE_LOCATION_ON = 29
         private const val LOCATION_PERMISSION_INDEX = 0
         private const val BACKGROUND_LOCATION_PERMISSION_INDEX = 1
